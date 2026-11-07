@@ -4,8 +4,8 @@ import { ImageResponse } from "next/og"
 export const OG_SIZE = { width: 1200, height: 630 }
 export const OG_CONTENT_TYPE = "image/png"
 
-const ACCENT_1 = "#0066A2"
-const ACCENT_2 = "#0EA5E9"
+const ACCENT_1 = "#b4472b"
+const ACCENT_2 = "#f0a083"
 
 /** Mirrors the emoji map used by the on-site card art. */
 const CATEGORY_EMOJI: Record<string, string> = {
@@ -44,7 +44,7 @@ export function renderBlogOgImage({ title, category, brand, coverImage }: BlogOg
           height: "100%",
           display: "flex",
           position: "relative",
-          background: "linear-gradient(135deg, #0d1117 0%, #1a1040 60%, #0d1b2a 100%)",
+          background: "linear-gradient(135deg, #12151d 0%, #1b1e2b 60%, #241a1a 100%)",
         }}
       >
         {useCover && (
@@ -70,28 +70,12 @@ export function renderBlogOgImage({ title, category, brand, coverImage }: BlogOg
           }}
         />
 
-        {/* Neon sweep lines, as on the card. */}
-        <div
-          style={{
-            position: "absolute", top: 300, left: -100, width: 1400, height: 2,
-            background: `linear-gradient(90deg, transparent, ${ACCENT_1}, transparent)`,
-            transform: "rotate(-5deg)",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute", top: 336, left: -100, width: 1400, height: 2,
-            background: `linear-gradient(90deg, transparent, ${ACCENT_2}88, transparent)`,
-            transform: "rotate(-5deg)",
-          }}
-        />
-
         {/* Keeps the type readable when a cover photo sits underneath. */}
         {useCover && (
           <div
             style={{
               position: "absolute", inset: 0,
-              background: "linear-gradient(90deg, rgba(5,10,20,0.92) 35%, rgba(5,10,20,0.55) 100%)",
+              background: "linear-gradient(90deg, rgba(18,21,29,0.94) 35%, rgba(18,21,29,0.6) 100%)",
             }}
           />
         )}
@@ -107,7 +91,7 @@ export function renderBlogOgImage({ title, category, brand, coverImage }: BlogOg
             <div
               style={{
                 fontSize: 22, fontWeight: 700, letterSpacing: 6,
-                textTransform: "uppercase", color: "#7dd3fc",
+                textTransform: "uppercase", color: "#f0a083",
               }}
             >
               {category}
@@ -135,11 +119,11 @@ export function renderBlogOgImage({ title, category, brand, coverImage }: BlogOg
               style={{
                 display: "flex", alignItems: "center", justifyContent: "center",
                 width: 46, height: 46, borderRadius: 12, marginRight: 16,
-                background: `linear-gradient(135deg, ${ACCENT_1}, ${ACCENT_2})`,
-                fontSize: 19, fontWeight: 800, color: "#ffffff",
+                background: "#f0a083",
+                fontSize: 24, fontWeight: 800, color: "#1b1e2b",
               }}
             >
-              CS
+              I
             </div>
             <div style={{ fontSize: 26, fontWeight: 600, color: "rgba(255,255,255,0.72)" }}>
               {brand}
