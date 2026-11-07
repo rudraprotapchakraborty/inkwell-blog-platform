@@ -1,5 +1,7 @@
 # Inkwell · Blog Writing Platform
 
+**Live:** https://inkwell-blog-platform-lyart.vercel.app
+
 Inkwell is a blog writing website built with **Next.js (App Router)** and **Tailwind CSS 4**. Writers draft, edit, publish and delete posts in a rich-text editor; readers browse by topic, like, share and comment. It was upgraded from a small blog *viewer* (placeholder posts + Kinde login) into a full writing platform.
 
 The blog-writing logic (slugs, validation, ownership, auth, OTP, Google sign-in, engagement, storage) is ported unchanged from the Creative Surf agency site; only the interface is new.
@@ -40,7 +42,12 @@ Production build: `npm run build && npm start`.
 | `GOOGLE_CLIENT_ID` `GOOGLE_CLIENT_SECRET` | Google sign-in |
 | `NEXT_PUBLIC_SITE_URL` | Public origin, used for callbacks and share links |
 
-For Google sign-in, add `http://localhost:3000/api/auth/google/callback` (and your deployed origin's equivalent) as an authorised redirect URI.
+For Google sign-in, add these as authorised redirect URIs:
+
+- `http://localhost:3000/api/auth/google/callback`
+- `https://inkwell-blog-platform-lyart.vercel.app/api/auth/google/callback`
+
+On Vercel set `NEXT_PUBLIC_SITE_URL=https://inkwell-blog-platform-lyart.vercel.app`.
 
 ### Demo accounts (created by `npm run seed`, also offered on the sign-in page)
 

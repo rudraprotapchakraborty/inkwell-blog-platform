@@ -10,6 +10,9 @@ const DEMO_PASSWORD = "Inkwell2026"
 const UA = "InkwellSeed/1.0 (personal portfolio project)"
 
 const ACCOUNTS = [
+  { email: "priya@inkwell.demo", name: "Priya Nair", role: "user" },
+  { email: "leo@inkwell.demo", name: "Leo Fischer", role: "user" },
+  { email: "amara@inkwell.demo", name: "Amara Diallo", role: "user" },
   { email: "writer@inkwell.demo", name: "Mira Okafor", role: "admin" },
   { email: "reader@inkwell.demo", name: "Sam Rivera", role: "user" },
 ]
@@ -155,6 +158,63 @@ try {
     added++
     console.log("added", slug)
   }
+
+  // ---- Demo engagement: likes, shares, views and comments on every post ----
+  const COMMENTS = [
+    "Really enjoyed this. I had no idea how much history sat behind something so ordinary.",
+    "Well written and easy to follow. Saving this to read again.",
+    "The section in the middle taught me something new. Thank you for sharing it.",
+    "Lovely photo choice too. It sets the tone for the whole piece.",
+    "I shared this with a friend who has been asking about exactly this topic.",
+    "Short enough to finish on a coffee break, deep enough to keep thinking about afterwards.",
+    "Great read. Would love a follow-up that goes further into the details.",
+    "This is why I like reading here: calm, clear and no rush.",
+    "Bookmarked. The key takeaways at the top are a nice touch.",
+    "I came for the title and stayed for the history. Nicely done.",
+  ]
+  const NETWORKS = ["facebook", "instagram", "x", "whatsapp", "copy"]
+  const rid = () => Array.from({ length: 20 }, () => "abcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 36)]).join("")
+  const pick = (arr, n) => [...arr].sort(() => Math.random() - 0.5).slice(0, n)
+
+  await Promise.all([
+    db.collection("blog_likes").createIndex({ blogId: 1, visitorId: 1 }, { unique: true }),
+    db.collection("blog_views").createIndex({ blogId: 1 }, { unique: true }),
+  ])
+  await Promise.all(["blog_likes", "blog_comments", "blog_shares"].map(c => db.collection(c).deleteMany({ seeded: true })))
+
+  const commenters = await users.find({ email: { $in: ["reader@inkwell.demo", "priya@inkwell.demo", "leo@inkwell.demo", "amara@inkwell.demo"] } }).toArray()
+  const allPosts = await blogs.find({ published: true }).toArray()
+  for (const post of allPosts) {
+    const blogId = post._id.toString()
+    const base = new Date(post.createdAt).getTime()
+
+    const likes = 9 + Math.floor(Math.random() * 52)
+    await db.collection("blog_likes").insertMany(
+      Array.from({ length: likes }, () => ({ blogId, visitorId: rid(), createdAt: new Date(base + Math.random() * 86400000 * 3), seeded: true })),
+    )
+
+    const shares = 2 + Math.floor(Math.random() * 14)
+    await db.collection("blog_shares").insertMany(
+      Array.from({ length: shares }, () => ({ blogId, network: NETWORKS[Math.floor(Math.random() * NETWORKS.length)], createdAt: new Date(base + Math.random() * 86400000 * 3), seeded: true })),
+    )
+
+    await db.collection("blog_views").updateOne({ blogId }, { $set: { count: 140 + Math.floor(Math.random() * 760) } }, { upsert: true })
+
+    const chosen = pick(commenters, 2 + Math.floor(Math.random() * 3))
+    const texts = pick(COMMENTS, chosen.length)
+    await db.collection("blog_comments").insertMany(
+      chosen.map((u, i) => ({
+        blogId,
+        userId: u._id.toString(),
+        name: u.name.split(" ")[0],
+        avatar: "",
+        text: texts[i],
+        createdAt: new Date(base + (i + 1) * 3600000 * (2 + Math.floor(Math.random() * 20))),
+        seeded: true,
+      })),
+    )
+  }
+  console.log("engagement added to", allPosts.length, "posts")
   console.log(`done: ${added} posts added. Demo password for both accounts: ${DEMO_PASSWORD}`)
 } finally {
   await client.close()
