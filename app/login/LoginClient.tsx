@@ -8,6 +8,7 @@ import { authMessages } from "@/lib/i18n/messages/auth"
 import { AuthError, AuthShell, AuthSubmit } from "@/components/auth/auth-shell"
 import { AuthField } from "@/components/auth/auth-field"
 import { AuthDivider, GoogleButton } from "@/components/auth/google-button"
+import DemoAccounts from "@/components/auth/demo-accounts"
 
 /** Maps the `?error=` codes the Google callback redirects with onto messages. */
 const GOOGLE_ERROR_KEYS: Record<string, string> = {
@@ -60,6 +61,15 @@ function LoginForm() {
   return (
     <AuthShell
       step={t("panel.steps.signIn")}
+      aside={
+        <DemoAccounts
+          onChoose={a => {
+            setIdentifier(a.email)
+            setPassword(a.password)
+            setError("")
+          }}
+        />
+      }
       title={t("loginTitle")}
       subtitle={t("loginSubtitle")}
       footer={
@@ -67,7 +77,7 @@ function LoginForm() {
           {t("noAccount")}{" "}
           <Link
             href={`/register${redirect !== "/account" ? `?from=${encodeURIComponent(redirect)}` : ""}`}
-            className="cs-underline rounded-sm font-semibold text-brand"
+            className="font-semibold text-brand underline underline-offset-4"
           >
             {t("createOne")}
           </Link>
@@ -96,7 +106,7 @@ function LoginForm() {
         <div className="-mt-1 flex justify-end">
           <Link
             href={`/forgot-password${identifier ? `?email=${encodeURIComponent(identifier)}` : ""}`}
-            className="cs-underline rounded-sm text-[13px] font-semibold text-muted transition-colors hover:text-brand"
+            className="text-sm font-semibold text-brand hover:underline hover:underline-offset-4"
           >
             {t("forgotLink")}
           </Link>

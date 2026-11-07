@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import "./globals.css"
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
+import SiteFrame from "@/components/SiteFrame"
 import Providers from "@/components/Providers"
 
 export const metadata: Metadata = {
@@ -33,9 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
-        <Navbar />
-        <main className="min-h-[70vh] pt-[68px]">{children}</main>
-        <Footer />
+        <SiteFrame>{children}</SiteFrame>
         <Providers />
       </body>
     </html>

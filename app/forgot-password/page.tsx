@@ -99,7 +99,7 @@ function ResetFlow() {
   const backToLogin = (
     <span>
       {t("forgot.remembered")}{" "}
-      <Link href="/login" className="cs-underline rounded-sm font-semibold text-brand">
+      <Link href="/login" className="font-semibold text-brand underline underline-offset-4">
         {t("signInLink")}
       </Link>
     </span>
@@ -125,7 +125,7 @@ function ResetFlow() {
               setError("")
               setCode("")
             }}
-            className="cs-underline rounded-sm font-semibold text-ink transition-colors hover:text-brand"
+            className="font-semibold text-brand underline underline-offset-4"
           >
             {t("forgot.differentEmail")}
           </button>

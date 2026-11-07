@@ -42,7 +42,7 @@ Production build: `npm run build && npm start`.
 
 For Google sign-in, add `http://localhost:3000/api/auth/google/callback` (and your deployed origin's equivalent) as an authorised redirect URI.
 
-### Demo accounts (created by `npm run seed`)
+### Demo accounts (created by `npm run seed`, also offered on the sign-in page)
 
 | Role | Email | Password |
 | --- | --- | --- |

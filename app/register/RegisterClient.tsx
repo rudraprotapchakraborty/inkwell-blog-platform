@@ -135,7 +135,7 @@ function RegisterFlow() {
               setError("")
               setNotice("")
             }}
-            className="cs-underline rounded-sm font-semibold text-ink transition-colors hover:text-brand"
+            className="font-semibold text-brand underline underline-offset-4"
           >
             {t("changeEmail")}
           </button>
@@ -189,7 +189,7 @@ function RegisterFlow() {
           {t("haveAccount")}{" "}
           <Link
             href={`/login${redirect !== "/account" ? `?from=${encodeURIComponent(redirect)}` : ""}`}
-            className="cs-underline rounded-sm font-semibold text-brand"
+            className="font-semibold text-brand underline underline-offset-4"
           >
             {t("signInLink")}
           </Link>

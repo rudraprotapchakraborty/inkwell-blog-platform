@@ -10,7 +10,7 @@ export function GoogleButton({ label, from }: { label: string; from?: string }) 
   return (
     <a
       href={href}
-      className="flex h-12 w-full items-center justify-center gap-3 rounded-[10px] bg-surface text-[15px] font-semibold tracking-[-0.01em] text-ink ring-1 ring-inset ring-ink/15 transition-[box-shadow,background-color] duration-200 hover:bg-ink/[0.02] hover:ring-ink/35"
+      className="btn btn-ghost w-full py-3.5"
     >
       <GoogleMark />
       {label}
@@ -45,10 +45,10 @@ function GoogleMark() {
 /** "──── or ────" separator between the Google button and the password form. */
 export function AuthDivider({ label }: { label: string }) {
   return (
-    <div className="my-7 flex items-center gap-4" role="separator" aria-label={label}>
-      <span aria-hidden className="h-px flex-1 bg-ink/10" />
-      <span aria-hidden className="eyeline text-muted">{label}</span>
-      <span aria-hidden className="h-px flex-1 bg-ink/10" />
+    <div className="my-6 flex items-center gap-4 text-xs text-muted" role="separator" aria-label={label}>
+      <span aria-hidden className="h-px flex-1 bg-line" />
+      <span aria-hidden>{label}</span>
+      <span aria-hidden className="h-px flex-1 bg-line" />
     </div>
   )
 }

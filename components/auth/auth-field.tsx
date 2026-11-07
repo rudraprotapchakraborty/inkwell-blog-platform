@@ -1,7 +1,7 @@
 "use client"
 
 import { useId, useState } from "react"
-import { Eye, EyeOff } from "lucide-react"
+import { Eye, EyeOff, Lock, Mail, UserRound } from "lucide-react"
 import { useT } from "@/lib/i18n"
 import { authMessages } from "@/lib/i18n/messages/auth"
 
@@ -14,13 +14,13 @@ interface AuthFieldProps {
   autoComplete?: string
   required?: boolean
   hint?: string
+  /** Defaults from the type: mail for email-like fields, lock for passwords. */
+  icon?: "mail" | "lock" | "user" | null
 }
 
-/**
- * A labelled input on the paper: the label above in the grotesk, a plain
- * field with a hairline that turns the action colour on focus. Passwords get
- * a reveal toggle that is a real, labelled, reachable button.
- */
+const ICONS = { mail: Mail, lock: Lock, user: UserRound }
+
+/** Labelled input with a leading icon; password inputs get a show/hide toggle. */
 export function AuthField({
   label,
   value,
@@ -30,19 +30,25 @@ export function AuthField({
   autoComplete,
   required = true,
   hint,
+  icon,
 }: AuthFieldProps) {
   const t = useT(authMessages)
   const id = useId()
   const [revealed, setRevealed] = useState(false)
   const isPassword = type === "password"
   const inputType = isPassword && revealed ? "text" : type
+  const iconKey = icon === undefined ? (isPassword ? "lock" : type === "email" || autoComplete === "username" || autoComplete === "email" ? "mail" : null) : icon
+  const Icon = iconKey ? ICONS[iconKey] : null
 
   return (
-    <div>
-      <label htmlFor={id} className="mb-2 block text-[13px] font-semibold tracking-[-0.005em] text-ink">
+    <div className="space-y-1.5">
+      <label htmlFor={id} className="text-sm font-semibold text-ink">
         {label}
       </label>
-      <div className="relative">
+      <div className="group relative">
+        {Icon && (
+          <Icon className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-muted transition-colors group-focus-within:text-brand" />
+        )}
         <input
           id={id}
           type={inputType}
@@ -52,7 +58,7 @@ export function AuthField({
           autoComplete={autoComplete}
           placeholder={placeholder}
           aria-describedby={hint ? `${id}-hint` : undefined}
-          className={`h-12 w-full rounded-[10px] bg-surface pl-4 ${isPassword ? "pr-12" : "pr-4"} text-[15px] text-ink outline-none ring-1 ring-inset ring-ink/15 transition-shadow duration-200 placeholder:text-muted/70 hover:ring-ink/30 focus:ring-2 focus:ring-brand`}
+          className={`input ${Icon ? "pl-11" : ""} ${isPassword ? "pr-11" : ""}`}
         />
         {isPassword && (
           <button
@@ -60,14 +66,14 @@ export function AuthField({
             onClick={() => setRevealed(v => !v)}
             aria-label={revealed ? t("hidePassword") : t("showPassword")}
             aria-pressed={revealed}
-            className="absolute right-1.5 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-md text-muted transition-colors hover:text-ink"
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-muted transition-colors hover:text-ink"
           >
-            {revealed ? <EyeOff aria-hidden size={16} /> : <Eye aria-hidden size={16} />}
+            {revealed ? <EyeOff className="h-[18px] w-[18px]" /> : <Eye className="h-[18px] w-[18px]" />}
           </button>
         )}
       </div>
       {hint && (
-        <p id={`${id}-hint`} className="mt-2 text-[13px] leading-snug text-muted">
+        <p id={`${id}-hint`} className="text-xs text-muted">
           {hint}
         </p>
       )}
